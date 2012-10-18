@@ -1,0 +1,17 @@
+[buildout]
+# name of your application egg
+appname = myapp
+
+# path to the wsgi config file
+wsgi-config = ${buildout:sources-dir}/${buildout:appname}/production.ini
+
+
+# mr.developer (http://pypi.python.org/pypi/mr.developer)
+# auto checkout
+auto-checkout += 
+    myapp
+
+[sources]
+# mr.developer (http://pypi.python.org/pypi/mr.developer)
+# list of sources
+myapp = git https://github.com/username/myapp.git
