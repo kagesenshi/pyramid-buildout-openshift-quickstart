@@ -4,10 +4,12 @@
 # up again.  This script gets executed directly, so it could be python, php,
 # ruby, etc.
 
-VENV=${OPENSHIFT_GEAR_DIR}/virtenv/bin/python
+#since we already know our cartridge
+#VENV = ${OPENSHIFT_HOMEDIR}/<cartridge>/virtenv/bin/python
+VENV=${OPENSHIFT_HOMEDIR}/python-2.6/virtenv/bin/python
 
 if [ ! -f ${VENV} ];then
-    virtualenv ${OPENSHIFT_GEAR_DIR}/virtenv/
+    virtualenv ${OPENSHIFT_HOMEDIR}/python-2.6/virtenv/
 fi
 
 if [ ! -f ${OPENSHIFT_REPO_DIR}/bin/buildout ]
@@ -31,6 +33,10 @@ then
     fi
 
     # initialize a buildout.cfg using the environment
+    if [ "x${OPENSHIFT_LOG_DIR}" == "x" ]
+    then
+        export OPENSHIFT_LOG_DIR=${OPENSHIFT_DIY_LOG_DIR}
+    fi
     cat >> openshift-buildout.cfg << EOF
 [buildout]
 extends = deployment.cfg
@@ -43,7 +49,7 @@ data-directory = ${OPENSHIFT_DATA_DIR}
 listen-address = ${OPENSHIFT_INTERNAL_IP}
 listen-port = ${OPENSHIFT_INTERNAL_PORT}
 pyeggcache-directory = ${OPENSHIFT_DATA_DIR}/egg-cache/
-run-directory = ${OPENSHIFT_RUN_DIR}
+run-directory = ${OPENSHIFT_HOMEDIR}/python-2.6/run/
 host = ${OPENSHIFT_APP_DNS}
 EOF
 
